@@ -44,20 +44,20 @@ input[type=button] {
 
 .search {
     float: right;
-    background: url(../images/search.png) 0px 8px no-repeat;
-    padding-left: 23px;
+    background: url(../images/search.png) 0px 7px no-repeat;
+    padding-left: 22px;
 }
 
 .searchbox {
-    width: 200px;
+    width: 180px;
     height: 26px;
-    padding: 0px;
     margin: 0px;
     outline: none;
     border: none;
     border-radius: 2px;
-    padding: 0px 10px;
+    padding: 0px 9px;
     color: #d1d1d1;
+    box-shadow: #b0b0b0 0px 1px 2px 1px inset;
 }
 
 .content {
@@ -65,8 +65,43 @@ input[type=button] {
 }
 
 .date-controls {
+    margin: 15px 0px 13px;
+}
+
+.button-left, 
+.button-right,
+.button-today {
+    font-size: 12px;
+    color: #666;
+    box-shadow: #bfbfbf 0px 0px 2px 1px inset;
+    outline: none;
+    border: none;
+    background: none;
+    border-radius: 4px;
+    cursor: pointer;
     height: 17px;
-    margin: 17px 0px 13px;
+    padding: 0px 7px;
+    margin: 0px;
+}
+
+.triangle {
+    width: 0; 
+    height: 0; 
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    display: inline-block;
+}
+
+.triangle-left {
+    border-right: 3px solid #666; 
+}
+
+.triangle-right {
+    border-left: 3px solid #666; 
+}
+
+.current-month {
+    padding: 0px 1px;
 }
 
 .calendar {
@@ -79,11 +114,12 @@ input[type=button] {
     width: 107px;
     height: 107px;
     border: 1px solid #e0e0e0;
-    padding: 10px;
+    padding: 7px;
 }
 
-.calendar td.today {
+.calendar td.current {
     background: #f2f2f2;
+    font-weight: bold;
 }
 
 .calendar td.reminder {
