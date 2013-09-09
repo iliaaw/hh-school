@@ -1,0 +1,42 @@
+.container {
+    width: 1000px;
+    margin: 0px;
+}
+
+.header {
+    height: 101px;
+    background: #f2f2f2;
+    padding: 0px 50px;
+    box-shadow: 0px 0px 5px 2px #cfcfcf;
+}
+
+.controls {
+    padding-top: 56px;
+}
+
+.buttons {
+    float: left;
+}
+
+.searchbox {
+    float: right;
+}
+
+.content {
+    padding: 0px 50px;
+}
+
+.date-controls {
+    height: 17px;
+    margin: 17px 0px 13px;
+}
+
+.calendar {
+    border-collapse: collapse;
+}
+
+.calendar td {
+    width: 127px;
+    height: 127px;
+    border: 1px solid #e0e0e0;
+}
