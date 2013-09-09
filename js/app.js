@@ -1,3 +1,7 @@
+function Month() {
+    
+}
+
 function getDayOfWeek(date) {
     var dayNames = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
     return dayNames[date.getDay()]
@@ -8,21 +12,26 @@ function getNameOfMonth(date) {
     return monthNames[date.getMonth()]
 }
 
-function myGetDay(date) {
+function getCorrectedDay(date) {
     return date.getDay() == 0 ? 6 : date.getDay() - 1
 }
 
 function renderTableCell(date, firstRow) {
-    var cellText = date.getDate()
+    var cellTitle = date.getDate()
     if (firstRow) {
-        cellText = getDayOfWeek(date) + ', ' +cellText
+        cellTitle = [getDayOfWeek(date), cellTitle].join(', ')
     }
-    return $('<td></td>').html(cellText)
+    var cellBody = loadEventFromLoadStorage(date)
+    var cell = $('<td></td>')
+    cell.append($('<span></span>').addClass('cell-title').html(cellTitle))
+    cell.append($('<div></div>').addClass('cell-body').html(cellBody))
+    cell.data('date', formatDate(date))
+    return cell
 }
 
 function renderCalendar(date) {
     var firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1)
-    var dayOfWeek = myGetDay(firstDayOfMonth)
+    var dayOfWeek = getCorrectedDay(firstDayOfMonth)
     var currentDate = new Date(firstDayOfMonth)
     currentDate.setDate(currentDate.getDate() - dayOfWeek)
 
@@ -77,6 +86,53 @@ function bindButtonHandlers() {
         _globalDate = new Date()
         renderPage(_globalDate)
     })
+
+    $('.button-new').click(function(event) {
+        $('.create-box').show()
+        $('.button-new').attr('disabled', 'disabled')
+    })
+
+    $('.button-create').click(function(event) {
+        $('.create-box').hide()
+        $('.button-new').attr('disabled', false)
+
+        if (window.localStorage) {
+            var date 
+            if ($('.current').length > 0) {
+                date = new Date(Date.parse($('.current').data('date')))
+                console.log($('.current').data('date'))
+            } else {
+                date = new Date()
+            }
+            console.log(date)
+            saveEventToLocalStorage(date, $('.create-input').val())
+            $('.create-input').val('')
+            renderPage(_globalDate)
+        }
+    })
+
+    $('.button-cancel-create').click(function(event) {
+        $('.create-box').hide()
+        $('.button-new').attr('disabled', false)
+    })
+}
+
+function formatDate(date) {
+    return [date.getFullYear(), date.getMonth() + 1, date.getDate()].join('-')
+}
+
+function saveEventToLocalStorage(date, event) {
+    console.log(event + 'save')
+
+    var key = formatDate(date)
+    var value = event
+    localStorage.setItem(key, value)
+}
+
+function loadEventFromLoadStorage(date) {
+    var key = formatDate(date)
+    var value = localStorage.getItem(key)
+    return value
 }
 
 function renderPage(date) {

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -9,24 +9,30 @@
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <div class="controls">
-        <form class="buttons">
-          <input type="button" value="Добавить">
-          <input type="button" value="Обновить">
-        </form>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="controls">
+          <button class="button-new">Добавить</button>
+          <button>Обновить</button>
+        </div>
 
-        <form class="search">
-          <input class="searchbox" type="text" placeholder="Событие, дата или участник">
+        <form class="search-form">
+          <input class="search-input" type="text" placeholder="Событие, дата или участник">
         </form>
       </div>
     </div>
 
+    <div class="create-box">
+      <input class="create-input" type="text">
+      <button class="button-cancel-create">&times;</button>
+      <button class="button-create">Создать</button>
+    </div>
+
     <div class="content">
       <div class="date-controls">
-        <button class="button-left"><div class="triangle triangle-left"></div></button>
+        <button class="button-left"><div class="triangle-left"></div></button>
         <span class="current-month"></span>
-        <button class="button-right"><div class="triangle triangle-right"></div></button>
+        <button class="button-right"><div class="triangle-right"></div></button>
         <button class="button-today">Сегодня</button>
       </div>
 
