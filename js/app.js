@@ -81,23 +81,29 @@
 
     Item.fromString = function(str) {
         var monthNames = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
-        var ary, date, title, day, month
+        var commaIndex, spaceIndex, firstHalf, second, day, month
 
-        ary = str.split(',')
-        title = $.trim(ary[1])
+        commaIndex = str.indexOf(',')
+        if (commaIndex != -1) {
+            firstHalf = $.trim(str.substring(0, commaIndex))
+            secondHalf = $.trim(str.substring(commaIndex + 1))
+            spaceIndex = firstHalf.indexOf(' ')
+            if (spaceIndex != -1) {
+                day = $.trim(firstHalf.substring(0, spaceIndex))
+                month = $.trim(firstHalf.substring(spaceIndex + 1))
 
-        ary = ary[0].split(' ')
-        day = parseInt(ary[0])
-        month = ary[1]
-
-        for (var i = 0; i < monthNames.length; i++) {
-            if (month == monthNames[i]) {
-                date = new Date()
-                date.setMonth(i)
-                date.setDate(day)
-                return new Item(date, title)
+                for (var i = 0; i < monthNames.length; i++) {
+                    if (month == monthNames[i]) {
+                        date = new Date()
+                        date.setMonth(i)
+                        date.setDate(day)
+                        return new Item(date, secondHalf)
+                    }
+                }
             }
         }
+
+        return null
     }
 
     var LocalStorageAdapter = function() {
@@ -419,6 +425,7 @@
 
     var FastBox = function(app) {
         this.app = app
+        this.adapter = new LocalStorageAdapter()
 
         this.show = function() {
             $('.fastbox').show()
@@ -431,6 +438,7 @@
 
         this.hide = function() {
             $('.fastbox').hide()
+            $('.fastbox-input').val('')
             $('.controlbox-button-new').attr('disabled', false)
         }
 
@@ -438,14 +446,11 @@
             var app = this.app
 
             if (window.localStorage) {
-                var item, adapter
-
-                adapter = new LocalStorageAdapter()
-                item = Item.fromString($('.fastbox-input').val())
-                adapter.save(item)
-
-                $('.createbox-input').val('')
-                app.fastbox.render()
+                var item = Item.fromString($('.fastbox-input').val())
+                if (item) {
+                    this.adapter.save(item)
+                }
+                app.calendar.render()
             }
         }
 
