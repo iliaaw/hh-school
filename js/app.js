@@ -16,6 +16,18 @@ function getCorrectedDay(date) {
     return date.getDay() == 0 ? 6 : date.getDay() - 1
 }
 
+function getPrettyDate(date) {
+    var monthNames = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
+    return [date.getDate(), monthNames[date.getMonth()]].join(' ')
+}
+
+function formatDate(date) {
+    var year = date.getFullYear()
+    var month = ('0' + (date.getMonth() + 1)).slice(-2)
+    var day = ('0' + date.getDate()).slice(-2)
+    return [year, month, day].join('-')
+}
+
 function renderTableCell(date, firstRow) {
     var cellTitle = date.getDate()
     if (firstRow) {
@@ -100,14 +112,12 @@ function bindButtonHandlers() {
         $('.button-new').attr('disabled', false)
 
         if (window.localStorage) {
-            var date 
+            var date
             if ($('.current').length > 0) {
                 date = new Date(Date.parse($('.current').data('date')))
-                console.log($('.current').data('date'))
             } else {
                 date = new Date()
             }
-            console.log(date)
             saveEventToLocalStorage(date, $('.create-input').val())
             $('.create-input').val('')
             renderPage(_globalDate)
@@ -120,13 +130,44 @@ function bindButtonHandlers() {
     })
 }
 
-function formatDate(date) {
-    return [date.getFullYear(), date.getMonth() + 1, date.getDate()].join('-')
+function renderSearchItem(date, event) {
+    var listItem = $('<li></li>')
+    listItem.addClass('search-item')
+    listItem.append($('<div></div>').addClass('search-item-event').html(event))
+    listItem.append($('<div></div>').addClass('search-item-date').html(getPrettyDate(date)))
+    listItem.data('date', formatDate(date))
+    listItem.click(function(event) {
+        _globalDate = date
+        renderPage(_globalDate)
+    })
+    return listItem
+}
+
+function bindSearchHandler() {
+    $('.search-form').submit(function(event) {
+        event.preventDefault()
+    })
+    $('.search-input').keyup(function(event) {
+        if (event.keyCode == 27) {
+            $('.search-dropdown').hide()
+            return
+        }
+
+        $('.search-dropdown').show()
+        var items = $('.search-items')
+        items.empty()
+        for(var i = 0; i < localStorage.length; i++) {
+            var key = localStorage.key(i)
+            var value = localStorage.getItem(key)
+            var timestamp = Date.parse(key)
+            if (!isNaN(timestamp) && value.indexOf($('.search-input').val()) != -1) {
+                items.append(renderSearchItem(new Date(key), value))
+            }
+        }
+    })
 }
 
 function saveEventToLocalStorage(date, event) {
-    console.log(event + 'save')
-
     var key = formatDate(date)
     var value = event
     localStorage.setItem(key, value)
@@ -146,6 +187,7 @@ function renderPage(date) {
 
 $(document).ready(function() {
     bindButtonHandlers()
+    bindSearchHandler()
     _globalDate = new Date()
     renderPage(_globalDate)
 })
