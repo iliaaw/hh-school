@@ -296,7 +296,7 @@
             $hiddenScroll = $('.resultsbox-hidden-scroll')
             $customScroll = $('.resultsbox-custom-scroll')
             $resultsboxWrapper = $('.resultsbox-wrapper')
-            $resultsbox= $('.resultsbox')
+            $resultsbox = $('.resultsbox')
             $searchResults = $('.resultsbox-results')
             mouseScrolling = false
             savedScrollPosition = 0
@@ -339,6 +339,8 @@
 
             $hiddenScroll.bind('scroll', updateCustomScrollPosition)
             $customScroll.bind('mousedown', updateHiddenScrollPosition)
+            $resultsboxWrapper.bind('scroll', preventScroll)
+            $resultsbox.bind('scroll', preventScroll)
             $searchResults.bind('scroll', preventScroll)
             $resultsboxWrapper.bind('selectstart', function() {
                 return false
