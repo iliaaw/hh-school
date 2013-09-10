@@ -2,7 +2,9 @@ body {
     font-family: 'Arial', sans-serif;
 }
 
-input, textarea, button {
+input,
+textarea,
+button {
     font-family: 'Arial', sans-serif;
     font-size: 13px;
 }
@@ -17,6 +19,8 @@ input, textarea, button {
     background: #f2f2f2;
     padding: 0px 50px;
     border-bottom: 1px solid #ccc;
+
+    -webkit-box-shadow: 0px 5px 4px -4px #cfcfcf;
     box-shadow: 0px 5px 4px -4px #cfcfcf;
 }
 
@@ -42,6 +46,8 @@ input, textarea, button {
     height: 26px;
     line-height: 26px;
     padding: 0px 11px;
+
+    -webkit-box-shadow: 0px 1px 1px 0px #bdbdbd;
     box-shadow: 0px 1px 1px 0px #bdbdbd;
     cursor: pointer;
 }
@@ -70,7 +76,9 @@ input, textarea, button {
     outline: none;
     display: block;
     border: 1px solid #ccc;
-    border-radius: 2px; 
+    border-radius: 2px;
+
+    -webkit-box-shadow: #b0b0b0 0px 1px 1px 0px inset;
     box-shadow: #b0b0b0 0px 1px 1px 0px inset;
 }
 
@@ -92,6 +100,8 @@ input, textarea, button {
     background: #fff;
     left: 50px;
     top: 97px;
+
+    -webkit-box-shadow: 0px 1px 4px 1px #cfcfcf;
     box-shadow: 0px 1px 4px 1px #cfcfcf;
     border-radius: 2px;
     border: 1px solid #ccc;
@@ -108,8 +118,13 @@ input, textarea, button {
     width: 14px;
     height: 14px;
     top: -8px;
+
+    -webkit-box-shadow: 2px -2px 4px -2px #ccc;
     box-shadow: 2px -2px 4px -2px #ccc;
+
     -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
     -ms-transform: rotate(-45deg);
     transform: rotate(-45deg);
 }
@@ -152,7 +167,6 @@ input, textarea, button {
     left: 185px;
 }
 
-
 .content {
     padding: 0px 50px;
 }
@@ -174,6 +188,7 @@ input, textarea, button {
 .datebox-button-prev,
 .datebox-button-next,
 .datebox-button-today {
+    -webkit-box-shadow: #bfbfbf 0px 0px 2px 1px inset;
     box-shadow: #bfbfbf 0px 0px 2px 1px inset;
     border-radius: 4px;
     cursor: pointer;
@@ -194,8 +209,8 @@ input, textarea, button {
 .datebox-button-next:after {
     content: "";
     position: absolute;
-    width: 0; 
-    height: 0; 
+    width: 0;
+    height: 0;
     display: inline-block;
     position: relative;
     left: 7px;
@@ -205,13 +220,13 @@ input, textarea, button {
 .datebox-button-prev:after {
     border-top: 3px solid transparent;
     border-bottom: 3px solid transparent;
-    border-right: 3px solid #666; 
+    border-right: 3px solid #666;
 }
 
 .datebox-button-next:after {
     border-top: 3px solid transparent;
     border-bottom: 3px solid transparent;
-    border-left: 3px solid #666; 
+    border-left: 3px solid #666;
 }
 
 .datebox-current-month {
@@ -254,9 +269,6 @@ input, textarea, button {
     padding: 5px;
 }
 
-.cell-date {
-}
-
 .cell-title {
     margin-top: 5px;
     font-weight: bold;
@@ -274,6 +286,8 @@ input, textarea, button {
     top: 97px;
     width: 210px;
     height: 383px;
+
+    -webkit-box-shadow: 0px 1px 4px 1px #cfcfcf;
     box-shadow: 0px 1px 4px 1px #cfcfcf;
     border-radius: 2px;
     border: 1px solid #ccc;
@@ -289,8 +303,13 @@ input, textarea, button {
     height: 14px;
     top: -8px;
     left: 20px;
+
+    -webkit-box-shadow: 2px -2px 4px -2px #ccc;
     box-shadow: 2px -2px 4px -2px #ccc;
+
     -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
     -ms-transform: rotate(-45deg);
     transform: rotate(-45deg);
 }
@@ -304,6 +323,8 @@ input, textarea, button {
 .resultsbox-hidden-scroll {
     width: 200%;
     height: 383px;
+
+    -ms-overflow-y: scroll;
     overflow-y: scroll;
 }
 
@@ -343,7 +364,7 @@ input, textarea, button {
     line-height: 20px;
     font-size: 13px;
     font-weight: bold;
-} 
+}
 
 .resultsbox-result-date {
     margin-bottom: 3px;
@@ -367,6 +388,8 @@ input, textarea, button {
     background: #fff;
     left: 445px;
     top: 250px;
+
+    -webkit-box-shadow: 0px 1px 4px 1px #cfcfcf;
     box-shadow: 0px 1px 4px 1px #cfcfcf;
     border-radius: 2px;
     border: 1px solid #ccc;
@@ -384,8 +407,12 @@ input, textarea, button {
     left: -8px;
     top: 20px;
 
+    -webkit-box-shadow: -2px 2px 4px -2px #ccc;
     box-shadow: -2px 2px 4px -2px #ccc;
+
     -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
@@ -400,7 +427,6 @@ input, textarea, button {
     font-size: 15px;
 }
 
-
 .editbox-input-participants {
     width: 250px;
     margin-bottom: 35px;
@@ -408,8 +434,7 @@ input, textarea, button {
 
 .editbox-input-details {
     padding: 5px 9px;
-    width: 250px;   
+    width: 250px;
     height: 115px;
     margin-bottom: 22px;
-    font-family: 'Arial', sans-serif;
 }
