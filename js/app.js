@@ -18,7 +18,11 @@
         return [this.getDate(), monthNames[this.getMonth()]].join(' ')
     }
 
-    Date.prototype.getFormattedDate = function() {
+    Date.prototype.getPrettyFullDate = function() {
+        return [this.getPrettyDate(), this.getFullYear()].join(' ')
+    }
+
+    Date.prototype.getHyphenSeparatedDate = function() {
         var year = this.getFullYear()
         var month = ('0' + (this.getMonth() + 1)).slice(-2)
         var day = ('0' + this.getDate()).slice(-2)
@@ -33,6 +37,7 @@
         this.run = function() {
             this.calendar.render()
             this.bindControlHandlers()
+            this.editbox.bindButtonHandlers()
             this.resultsbox.bindSearchHandler()
         }
 
@@ -41,17 +46,20 @@
 
             $('.datebox-button-prev').click(function(event) {
                 that.calendar.date.setMonth(that.calendar.date.getMonth() - 1)
+                that.editbox.hide()
                 that.calendar.render()
             })
 
             $('.datebox-button-next').click(function(event) {
                 that.calendar.date.setMonth(that.calendar.date.getMonth() + 1)
+                that.editbox.hide()
                 that.calendar.render()
             })
 
 
             $('.datebox-button-today').click(function(event) {
                 that.calendar.date = new Date()
+                that.editbox.hide()
                 that.calendar.render()
             })
 
@@ -81,17 +89,14 @@
                 $('.fastbox').hide()
                 $('.button-new').attr('disabled', false)
             })
-
-            $('.editbox-button-close').click(function(event) {
-                that.editbox.hide()
-            })
         }
     }
 
-    var Item = function(date, title, participants) {
+    var Item = function(date, title, participants, details) {
         this.date = date
         this.title = title
         this.participants = participants
+        this.details = details
     }
 
     Item.fromString = function(str) {
@@ -99,7 +104,7 @@
         var ary, date, title, day, month
 
         ary = str.split(',')
-        title = ary[1]
+        title = $.trim(ary[1])
 
         ary = ary[0].split(' ')
         day = parseInt(ary[0])
@@ -119,22 +124,31 @@
         this.save = function(item) {
             var key, value
 
-            key = item.date.getFormattedDate()
-            value = JSON.stringify({ title: item.title, participants: item.participants })
+            key = item.date.getHyphenSeparatedDate()
+            value = JSON.stringify({ 
+                title: item.title, 
+                participants: item.participants,
+                details: item.details
+            })
             localStorage.setItem(key, value)
         }
 
         this.load = function(date) {
             var key, value, jso
 
-            key = date.getFormattedDate()
+            key = date.getHyphenSeparatedDate()
             value = localStorage.getItem(key)
             try {
                 json = JSON.parse(value)
-                return new Item(date, json.title || '', json.participants || '')
+                return new Item(date, json.title || '', json.participants || '', json.details || '')
             } catch (ex) {
                 return null
             }
+        }
+
+        this.remove = function(date) {
+            var key = date.getHyphenSeparatedDate()
+            localStorage.removeItem(key)
         }
     }
 
@@ -190,7 +204,7 @@
             return $('<td></td>')
                 .addClass('cell')
                 .addClass(item ? 'cell-reminder' : '')
-                .addClass(date.getFormattedDate() == new Date().getFormattedDate() ? 'cell-today' : '')
+                .addClass(date.getHyphenSeparatedDate() == new Date().getHyphenSeparatedDate() ? 'cell-today' : '')
                 .append($('<div></div>')
                     .addClass('cell-wrapper')
                     .append($('<span></span>')
@@ -199,7 +213,7 @@
                     .append($('<div></div>')
                         .addClass('cell-body')
                         .html(cellTitle)))
-                .data('date', date.getFormattedDate())
+                .data('date', date.getHyphenSeparatedDate())
                 .click(clickHandler)
         }
     }
@@ -248,6 +262,7 @@
                 show = value.date.getPrettyDate().toLowerCase().indexOf(substring) != -1
                     || value.title.toLowerCase().indexOf(substring) != -1
                     || value.participants.toLowerCase().indexOf(substring) != -1
+                    || value.details.toLowerCase().indexOf(substring) != -1
                 if (value && show) {
                     items.append(this.renderSearchItem(value))
                 }
@@ -265,7 +280,6 @@
                 .append($('<div></div>')
                     .addClass('resultsbox-result-date')
                     .html(item.date.getPrettyDate()))
-                .data('date', item.date.getFormattedDate())
                 .click(function(event) {
                     app.calendar.date = item.date
                     app.calendar.render()
@@ -332,19 +346,72 @@
 
     var EditBox = function(app) {
         this.app = app
+        this.adapter = new LocalStorageAdapter()
 
         this.show = function(cell) {
-            var $editbox, $cell
+            var item, $editbox, $cell
 
+            this.clear()
             $cell = $(cell)
             $('.editbox')
                 .show()
                 .css('left', $cell.offset().left + $cell.width() + 15)
                 .css('top', $cell.offset().top - 20)
+
+            this.date = new Date(Date.parse($cell.data('date')))
+            $('.editbox-input-date').val(this.date.getPrettyFullDate())
+            item = this.adapter.load(this.date)
+            if (item) {
+                $('.editbox-input-title').val(item.title)
+                $('.editbox-input-participants').val(item.participants)
+                $('.editbox-input-details').val(item.details)
+            }
+        }
+
+        this.clear = function() {
+            $('.editbox-input-title').val('')
+            $('.editbox-input-date').val('')
+            $('.editbox-input-participants').val('')
+            $('.editbox-input-details').val('')
         }
 
         this.hide = function() {
             $('.editbox').hide()
+            this.clear()
+        }
+
+        this.update = function() {
+            var title, participants, details
+
+            title = $('.editbox-input-title').val()
+            participants = $('.editbox-input-participants').val()
+            details =$('.editbox-input-details').val()
+            this.adapter.save(new Item(this.date, title, participants, details))
+
+            this.hide()
+            this.app.calendar.render()
+        }
+
+        this.remove = function() {
+            this.adapter.remove(this.date)
+            this.hide()
+            this.app.calendar.render()
+        }
+
+        this.bindButtonHandlers = function() {
+            var that = this
+
+            $('.editbox-button-close').click(function(event) {
+                that.hide()
+            })
+
+            $('.editbox-button-done').click(function(event) {
+                that.update()
+            })
+
+            $('.editbox-button-remove').click(function(event) {
+                that.remove()
+            })
         }
     }
 
