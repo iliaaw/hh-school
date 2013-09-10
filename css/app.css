@@ -271,19 +271,19 @@ body {
     transform: rotate(-45deg);
 }
 
-.search {
+.resultsbox {
     width: 210px;
     height: 383px;
     overflow: hidden;
 }
 
-.hidden-scrollbar {
+.resultsbox-hidden-scroll {
     width: 200%;
     height: 383px;
     overflow-y: scroll;
 }
 
-.custom-scrollbar {
+.resultsbox-custom-scroll {
     position: absolute;
     width: 7px;
     height: 24px;

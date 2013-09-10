@@ -39,6 +39,7 @@
             this.bindControlHandlers()
             this.editbox.bindButtonHandlers()
             this.resultsbox.bindSearchHandler()
+            this.resultsbox.bindScrollHandler()
         }
 
         this.bindControlHandlers = function() {
@@ -240,13 +241,13 @@
 
         this.hide = function() {
             $('.resultsbox-wrapper').hide()
-            $('.hidden-scrollbar').scrollTop(0)
+            $('.resultsbox-hidden-scroll').scrollTop(0)
         }
 
         this.show = function() {
             $('.resultsbox-results').empty()
             $('.resultsbox-wrapper').show()
-            $('.hidden-scrollbar').scrollTop(0)
+            $('.resultsbox-hidden-scroll').scrollTop(0)
         }
 
         this.render = function() {
@@ -286,20 +287,20 @@
                 })
         }
 
-        this.bindScrollBar = function() {
+        this.bindScrollHandler = function() {
             var divHeight, ulHeight, mouseScrolling
             var contentPosition, scrollPosition, savedScrollPosition, startPosition
             var $hiddenScroll, $customScroll, $resultsbox, $searchResults, $resultsboxWrapper
 
-            $hiddenScroll = $('.resultsbox-hidden-scrollbar')
-            $customScroll = $('.resultsbox-custom-scrollbar')
+            $hiddenScroll = $('.resultsbox-hidden-scroll')
+            $customScroll = $('.resultsbox-custom-scroll')
             $resultsboxWrapper = $('.resultsbox-wrapper')
-            $resultsbox= $('.search')
+            $resultsbox= $('.resultsbox')
             $searchResults = $('.resultsbox-results')
             mouseScrolling = false
             savedScrollPosition = 0
 
-            var updateCustomScrollPosition = function() {
+            var updateCustomScrollPosition = function(event) {
                 divHeight = $resultsbox.height() - $customScroll.outerHeight(true)
                 ulHeight = $hiddenScroll.get(0).scrollHeight - $hiddenScroll.height()
                 contentPosition = $hiddenScroll.scrollTop() / ulHeight
@@ -311,26 +312,26 @@
                 }
             }
 
-            var updateHiddenScrollPosition = function() {
-                startPosition = item.clientY
-                divHeight = resultsbox.height() - customScroll.outerHeight(true)
-                ulHeight = hiddenScroll.get(0).scrollHeight - hiddenScroll.height()
+            var updateHiddenScrollPosition = function(event) {
+                startPosition = event.clientY
+                divHeight = $resultsbox.height() - $customScroll.outerHeight(true)
+                ulHeight = $hiddenScroll.get(0).scrollHeight - $hiddenScroll.height()
                 mouseScrolling = true
 
                 $(document).bind('mousemove', function(event) {
-                    scrollPosition = (item.clientY - startPosition) + savedScrollPosition
+                    scrollPosition = (event.clientY - startPosition) + savedScrollPosition
                     contentPosition = scrollPosition / divHeight
-                    hiddenScroll.scrollTop(ulHeight * contentPosition)
+                    $hiddenScroll.scrollTop(ulHeight * contentPosition)
                 })
 
                 $(document).bind('mouseup', function(event) {
-                    savedScrollPosition = hiddenScroll.scrollTop() / ulHeight * divHeight
-                    $(document).unbind('mousemove', mousemove)
+                    savedScrollPosition = $hiddenScroll.scrollTop() / ulHeight * divHeight
+                    $(document).unbind('mousemove')
                     mouseScrolling = false
                 })
             }
 
-            var preventScroll = function() {
+            var preventScroll = function(event) {
                 this.scrollTop = 0
                 this.scrollLeft = 0
             }
