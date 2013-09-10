@@ -131,8 +131,8 @@ input, textarea, button {
     right: 0px;
     color: #a1a1a1;
     background: none;
-    margin: none;
-    padding: none;
+    margin: 0px;
+    padding: 0px;
     outline: none;
     border: none;
     cursor: pointer;

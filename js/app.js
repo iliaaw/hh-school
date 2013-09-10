@@ -241,11 +241,10 @@
                 key = localStorage.key(i)
                 value = adapter.load(new Date(Date.parse(key)))
                 substring = $('.searchbox-input').val().toLowerCase()
-                show = value.date.getPrettyDate().toLowerCase().indexOf(substring) != -1
+                if (value && (value.date.getPrettyDate().toLowerCase().indexOf(substring) != -1
                     || value.title.toLowerCase().indexOf(substring) != -1
                     || value.participants.toLowerCase().indexOf(substring) != -1
-                    || value.details.toLowerCase().indexOf(substring) != -1
-                if (value && show) {
+                    || value.details.toLowerCase().indexOf(substring) != -1)) {
                     items.append(this.renderSearchItem(value))
                 }
             }
@@ -404,6 +403,9 @@
                     if (event.keyCode == 13) {
                         that.update()
                     }
+                    if (event.keyCode == 27) {
+                        that.hide()
+                    }
                 })
             })
         }
@@ -453,6 +455,9 @@
             $('.fastbox-input').keyup(function(event) {
                 if (event.keyCode == 13) {
                     that.create()
+                }
+                if (event.keyCode == 27) {
+                    that.hide()
                 }
             })
         }
