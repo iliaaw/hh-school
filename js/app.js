@@ -40,8 +40,7 @@
             this.bindHandlers()
             this.fastbox.bindHandlers()
             this.editbox.bindHandlers()
-            this.resultsbox.bindSearchHandler()
-            this.resultsbox.bindScrollHandler()
+            this.resultsbox.bindHandlers()
         }
 
         this.bindHandlers = function() {
@@ -226,15 +225,28 @@
             })
         }
 
+        this.bindHandlers = function() {
+            var that = this
+            this.bindSearchHandler()
+            this.bindScrollHandler()
+            $('.searchbox-button-close').click(function(event) {
+                event.preventDefault()
+                that.hide()
+            })
+        }
+
         this.hide = function() {
             $('.resultsbox-wrapper').hide()
             $('.resultsbox-hidden-scroll').scrollTop(0)
+            $('.searchbox-button-close').hide()
+            $('.searchbox-input').val('')
         }
 
         this.show = function() {
             $('.resultsbox-results').empty()
             $('.resultsbox-wrapper').show()
             $('.resultsbox-hidden-scroll').scrollTop(0)
+            $('.searchbox-button-close').show()
             
             this.app.fastbox.hide()
             this.app.editbox.hide()

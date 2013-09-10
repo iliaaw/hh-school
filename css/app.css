@@ -124,11 +124,8 @@ input, textarea, button {
 }
 
 .fastbox-button-close,
-.editbox-button-close {
-    position: absolute;
-    font-size: 15px;
-    top: 3px;
-    right: 5px;
+.editbox-button-close,
+.searchbox-button-close {
     color: #a1a1a1;
     background: none;
     margin: 0px;
@@ -137,6 +134,24 @@ input, textarea, button {
     border: none;
     cursor: pointer;
 }
+
+.fastbox-button-close,
+.editbox-button-close {
+    position: absolute;
+    font-size: 15px;
+    top: 3px;
+    right: 5px;
+    color: #a1a1a1;
+}
+
+.searchbox-button-close {
+    display: none;
+    font-size: 18px;
+    position: relative;
+    top: -23px;
+    left: 185px;
+}
+
 
 .content {
     padding: 0px 50px;
