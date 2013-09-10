@@ -229,6 +229,9 @@
             $('.resultsbox-results').empty()
             $('.resultsbox-wrapper').show()
             $('.resultsbox-hidden-scroll').scrollTop(0)
+            
+            this.app.fastbox.hide()
+            this.app.editbox.hide()
         }
 
         this.render = function() {
@@ -348,6 +351,9 @@
             }
             $('.editbox-input-date').val(this.date.getPrettyFullDate())
             $('.editbox-input-title').focus()
+
+            this.app.resultsbox.hide()
+            this.app.fastbox.hide()
         }
 
         this.clear = function() {
@@ -418,6 +424,9 @@
             $('.fastbox').show()
             $('.fastbox-input').focus()
             $('.controlbox-button-new').attr('disabled', 'disabled')
+
+            this.app.editbox.hide()
+            this.app.resultsbox.hide()
         }
 
         this.hide = function() {
