@@ -280,7 +280,7 @@ body {
     border-bottom: none;
 }
 
-.search-item-event {
+.search-item-title {
     margin-top: 4px;
     margin-left: -4px;
     padding-left: 8px;
@@ -300,8 +300,8 @@ body {
     font-size: 12px;
 }
 
-.search-item:hover .search-item-date,
-.search-item:hover .search-item-event {
+.search-item:hover .search-item-title,
+.search-item:hover .search-item-date {
     background: #29a2ff;
     color: #fff;
 }
