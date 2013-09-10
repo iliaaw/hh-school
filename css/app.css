@@ -50,6 +50,7 @@ input, textarea, button {
 .controlbox-button-new:disabled {
     background: #025da3;
     color: #c1cfe0;
+    text-shadow: none;
 }
 
 .searchbox {

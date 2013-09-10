@@ -31,18 +31,20 @@
 
     var App = function() {
         this.calendar = new Calendar(this, new Date())
-        this.resultsbox = new ResultsBox(this)
+        this.fastbox = new FastBox(this)
         this.editbox = new EditBox(this)
+        this.resultsbox = new ResultsBox(this)
 
         this.run = function() {
             this.calendar.render()
-            this.bindControlHandlers()
-            this.editbox.bindButtonHandlers()
+            this.bindHandlers()
+            this.fastbox.bindHandlers()
+            this.editbox.bindHandlers()
             this.resultsbox.bindSearchHandler()
             this.resultsbox.bindScrollHandler()
         }
 
-        this.bindControlHandlers = function() {
+        this.bindHandlers = function() {
             var that = this
 
             $('.datebox-button-prev').click(function(event) {
@@ -65,30 +67,7 @@
             })
 
             $('.controlbox-button-new').click(function(event) {
-                $('.fastbox').show()
-                $('.fastbox-input').focus()
-                $('.controlbox-button-new').attr('disabled', 'disabled')
-            })
-
-            $('.fastbox-button-create').click(function(event) {
-                $('.fastbox').hide()
-                $('.controlbox-button-new').attr('disabled', false)
-
-                if (window.localStorage) {
-                    var item, adapter
-
-                    adapter = new LocalStorageAdapter()
-                    item = Item.fromString($('.fastbox-input').val())
-                    adapter.save(item)
-
-                    $('.createbox-input').val('')
-                    that.fastbox.render()
-                }
-            })
-
-            $('.fastbox-button-close').click(function(event) {
-                $('.fastbox').hide()
-                $('.controlbox-button-new').attr('disabled', false)
+                that.fastbox.show()
             })
         }
     }
@@ -362,13 +341,14 @@
                 .css('top', $cell.offset().top - 20)
 
             this.date = new Date(Date.parse($cell.data('date')))
-            $('.editbox-input-date').val(this.date.getPrettyFullDate())
             item = this.adapter.load(this.date)
             if (item) {
                 $('.editbox-input-title').val(item.title)
                 $('.editbox-input-participants').val(item.participants)
                 $('.editbox-input-details').val(item.details)
             }
+            $('.editbox-input-date').val(this.date.getPrettyFullDate())
+            $('.editbox-input-title').focus()
         }
 
         this.clear = function() {
@@ -390,7 +370,9 @@
             title = $('.editbox-input-title').val()
             participants = $('.editbox-input-participants').val()
             details =$('.editbox-input-details').val()
-            this.adapter.save(new Item(this.date, title, participants, details))
+            if (title || participants || details) {
+                this.adapter.save(new Item(this.date, title, participants, details))
+            }
 
             this.hide()
             this.app.calendar.render()
@@ -402,7 +384,7 @@
             this.app.calendar.render()
         }
 
-        this.bindButtonHandlers = function() {
+        this.bindHandlers = function() {
             var that = this
 
             $('.editbox-button-close').click(function(event) {
@@ -415,6 +397,63 @@
 
             $('.editbox-button-remove').click(function(event) {
                 that.remove()
+            })
+
+            $.each(['.editbox-input-title', '.editbox-input-participants'], function(index, selector) {
+                $(selector).keyup(function(event) {
+                    if (event.keyCode == 13) {
+                        that.update()
+                    }
+                })
+            })
+        }
+    }
+
+    var FastBox = function(app) {
+        this.app = app
+
+        this.show = function() {
+            $('.fastbox').show()
+            $('.fastbox-input').focus()
+            $('.controlbox-button-new').attr('disabled', 'disabled')
+        }
+
+        this.hide = function() {
+            $('.fastbox').hide()
+            $('.controlbox-button-new').attr('disabled', false)
+        }
+
+        this.create = function() {
+            var app = this.app
+
+            if (window.localStorage) {
+                var item, adapter
+
+                adapter = new LocalStorageAdapter()
+                item = Item.fromString($('.fastbox-input').val())
+                adapter.save(item)
+
+                $('.createbox-input').val('')
+                app.fastbox.render()
+            }
+        }
+
+        this.bindHandlers = function() {
+            var that = this
+
+            $('.fastbox-button-create').click(function(event) {
+                that.create()
+                that.hide()  
+            })
+
+            $('.fastbox-button-close').click(function(event) {
+                that.hide()
+            })
+
+            $('.fastbox-input').keyup(function(event) {
+                if (event.keyCode == 13) {
+                    that.create()
+                }
             })
         }
     }
