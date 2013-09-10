@@ -234,12 +234,16 @@ body {
     padding: 5px;
 }
 
-.cell-title {
+.cell-date {
 }
 
-.cell-body {
+.cell-title {
     margin-top: 5px;
     font-weight: bold;
+}
+
+.cell-participants {
+    margin-top: 5px;
 }
 
 .resultsbox-wrapper {

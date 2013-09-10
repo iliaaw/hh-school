@@ -156,6 +156,7 @@
     var Calendar = function(app, date) {
         this.app = app
         this.date = date
+        this.adapter = new LocalStorageAdapter()
 
         this.render = function() {
             var firstDay = new Date(this.date.getFullYear(), this.date.getMonth(), 1)
@@ -188,13 +189,11 @@
         }
 
         this.renderCell = function(date, isFirstRow) {
-            var adapter, item, cellDate, cellTitle, clickHandler, app
+            var app, item, cellDate, cellParticipants, clickHandler
 
             app = this.app
-            adapter = new LocalStorageAdapter()
-            item = adapter.load(date)
+            item = this.adapter.load(date)
             cellDate = isFirstRow ? [date.getDayName(), date.getDate()].join(', ') : date.getDate()
-            cellTitle = item ? item.title : ''
 
             clickHandler = function(event) {
                 $('.cell-current').removeClass('cell-current')
@@ -208,12 +207,15 @@
                 .addClass(date.getHyphenSeparatedDate() == new Date().getHyphenSeparatedDate() ? 'cell-today' : '')
                 .append($('<div></div>')
                     .addClass('cell-wrapper')
-                    .append($('<span></span>')
-                        .addClass('cell-title')
+                    .append($('<div></div>')
+                        .addClass('cell-date')
                         .html(cellDate))
                     .append($('<div></div>')
-                        .addClass('cell-body')
-                        .html(cellTitle)))
+                        .addClass('cell-title')
+                        .html(item ? item.title : ''))
+                    .append($('<div></div>')
+                        .addClass('cell-participants')
+                        .html(item ? item.participants : '')))
                 .data('date', date.getHyphenSeparatedDate())
                 .click(clickHandler)
         }
