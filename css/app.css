@@ -2,6 +2,11 @@ body {
     font-family: 'Arial', sans-serif;
 }
 
+input, textarea, button {
+    font-family: 'Arial', sans-serif;
+    font-size: 13px;
+}
+
 .container {
     width: 1000px;
     margin: 0px 0px 65px 0px;
@@ -27,7 +32,6 @@ body {
 .controlbox-button-refresh {
     background: #0472c7;
     color: #ffffff;
-    font-size: 13px;
     letter-spacing: -1px;
     font-weight: bold;
     border: none;
@@ -43,7 +47,7 @@ body {
 }
 
 .controlbox-button-new:active,
-.controlbox-button-refresh:disabled {
+.controlbox-button-new:disabled {
     background: #025da3;
     color: #c1cfe0;
 }

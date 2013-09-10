@@ -72,23 +72,23 @@
 
             $('.fastbox-button-create').click(function(event) {
                 $('.fastbox').hide()
-                $('.button-new').attr('disabled', false)
+                $('.controlbox-button-new').attr('disabled', false)
 
                 if (window.localStorage) {
                     var item, adapter
 
                     adapter = new LocalStorageAdapter()
-                    item = Item.fromString($('.create-input').val())
+                    item = Item.fromString($('.fastbox-input').val())
                     adapter.save(item)
 
-                    $('.create-input').val('')
-                    that.calendar.render()
+                    $('.createbox-input').val('')
+                    that.fastbox.render()
                 }
             })
 
             $('.fastbox-button-close').click(function(event) {
                 $('.fastbox').hide()
-                $('.button-new').attr('disabled', false)
+                $('.controlbox-button-new').attr('disabled', false)
             })
         }
     }
@@ -379,6 +379,7 @@
         }
 
         this.hide = function() {
+            $('.cell-current').removeClass('cell-current')
             $('.editbox').hide()
             this.clear()
         }
