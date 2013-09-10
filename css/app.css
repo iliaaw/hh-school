@@ -11,7 +11,7 @@ button {
 
 .container {
     width: 1000px;
-    margin: 0px 0px 65px 0px;
+    margin: 0px 0px 65px;
 }
 
 .header-wrapper {
@@ -46,14 +46,15 @@ button {
     height: 26px;
     line-height: 26px;
     padding: 0px 11px;
+    cursor: pointer;
 
     -webkit-box-shadow: 0px 1px 1px 0px #bdbdbd;
     box-shadow: 0px 1px 1px 0px #bdbdbd;
-    cursor: pointer;
 }
 
 .controlbox-button-new:active,
-.controlbox-button-new:disabled {
+.controlbox-button-new:disabled,
+.controlbox-button-refresh:active {
     background: #025da3;
     color: #c1cfe0;
     text-shadow: none;
@@ -100,13 +101,13 @@ button {
     background: #fff;
     left: 50px;
     top: 97px;
+    border-radius: 2px;
+    border: 1px solid #ccc;
+    padding: 24px 24px 0px;
+    z-index: 1;
 
     -webkit-box-shadow: 0px 1px 4px 1px #cfcfcf;
     box-shadow: 0px 1px 4px 1px #cfcfcf;
-    border-radius: 2px;
-    border: 1px solid #ccc;
-    padding: 24px 24px 0px 21px;
-    z-index: 1;
 }
 
 .fastbox:after {
@@ -118,6 +119,7 @@ button {
     width: 14px;
     height: 14px;
     top: -8px;
+    left: 20px;
 
     -webkit-box-shadow: 2px -2px 4px -2px #ccc;
     box-shadow: 2px -2px 4px -2px #ccc;
@@ -188,10 +190,11 @@ button {
 .datebox-button-prev,
 .datebox-button-next,
 .datebox-button-today {
-    -webkit-box-shadow: #bfbfbf 0px 0px 2px 1px inset;
-    box-shadow: #bfbfbf 0px 0px 2px 1px inset;
     border-radius: 4px;
     cursor: pointer;
+    
+    -webkit-box-shadow: #bfbfbf 0px 0px 2px 1px inset;
+    box-shadow: #bfbfbf 0px 0px 2px 1px inset;
 }
 
 .datebox-button-prev,
@@ -286,11 +289,11 @@ button {
     top: 97px;
     width: 210px;
     height: 383px;
+    border-radius: 2px;
+    border: 1px solid #ccc;
 
     -webkit-box-shadow: 0px 1px 4px 1px #cfcfcf;
     box-shadow: 0px 1px 4px 1px #cfcfcf;
-    border-radius: 2px;
-    border: 1px solid #ccc;
 }
 
 .resultsbox-wrapper:after {
@@ -388,12 +391,12 @@ button {
     background: #fff;
     left: 445px;
     top: 250px;
-
-    -webkit-box-shadow: 0px 1px 4px 1px #cfcfcf;
-    box-shadow: 0px 1px 4px 1px #cfcfcf;
     border-radius: 2px;
     border: 1px solid #ccc;
     padding: 24px 22px;
+
+    -webkit-box-shadow: 0px 1px 4px 1px #cfcfcf;
+    box-shadow: 0px 1px 4px 1px #cfcfcf;
 }
 
 .editbox:after {
