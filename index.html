@@ -11,39 +11,48 @@
   <div class="container">
     <div class="header-wrapper">
       <div class="header">
-        <div class="controls">
-          <button class="button-new">Добавить</button>
-          <button>Обновить</button>
+        <div class="controlbox">
+          <button class="controlbox-button-new">Добавить</button>
+          <button class="controlbox-button-refresh">Обновить</button>
         </div>
 
-        <form class="search-form">
-          <input class="search-input" type="text" placeholder="Событие, дата или участник">
+        <form class="searchbox">
+          <input class="searchbox-input" type="text" placeholder="Событие, дата или участник">
         </form>
       </div>
     </div>
 
-    <div class="create-box">
-      <div class="triangle-up"></div>
-      <input class="create-input" type="text">
-      <button class="button-cancel-create">&times;</button>
-      <button class="button-create">Создать</button>
+    <div class="fastbox">
+      <input class="fastbox-input" type="text" placeholder="1 марта, 14:00, День рождения">
+      <button class="fastbox-button-close">&times;</button>
+      <button class="fastbox-button-create">Создать</button>
     </div>
 
-    <div class="search-wrapper">
-      <div class="search">
-        <div class="hidden-scrollbar">
-          <ul class="search-items"></ul>
+    <div class="editbox">
+      <button class="editbox-button-close">&times;</button>
+      <input type="text" class="editbox-input-title" placeholder="Событие">
+      <input type="text" class="editbox-input-date" placeholder="День, месяц, год">
+      <input type="text" class="editbox-input-participants" placeholder="Имена участников">
+      <textarea class="editbox-input-details" placeholder="Описание"></textarea>
+      <button class="editbox-button-ready">Готово</button>
+      <button class="editbox-button-remove">Удалить</button>
+    </div>
+
+    <div class="resultsbox-wrapper">
+      <div class="resultsbox">
+        <div class="resultsbox-hidden-scroll">
+          <ul class="resultsbox-results"></ul>
         </div>
-        <div class="custom-scrollbar"></div>
+        <div class="resultsbox-custom-scroll"></div>
       </div>
     </div>
 
     <div class="content">
-      <div class="date-controls">
-        <div class="button-left"></div>
-        <div class="current-month"></div>
-        <div class="button-right"></div>
-        <div class="button-today">Сегодня</div>
+      <div class="datebox">
+        <div class="datebox-button-prev"></div>
+        <div class="datebox-current-month"></div>
+        <div class="datebox-button-next"></div>
+        <div class="datebox-button-today">Сегодня</div>
       </div>
 
       <table class="calendar">

@@ -26,41 +26,43 @@
     }
 
     var App = function() {
-        this.calendar = new Calendar(new Date())
-        this.searchbox = new SearchBox(this)
+        this.calendar = new Calendar(this, new Date())
+        this.resultsbox = new ResultsBox(this)
+        this.editbox = new EditBox(this)
 
         this.run = function() {
             this.calendar.render()
             this.bindControlHandlers()
-            this.searchbox.bindSearchHandler()
+            this.resultsbox.bindSearchHandler()
         }
 
         this.bindControlHandlers = function() {
             var that = this
 
-            $('.button-left').click(function(event) {
+            $('.datebox-button-prev').click(function(event) {
                 that.calendar.date.setMonth(that.calendar.date.getMonth() - 1)
                 that.calendar.render()
             })
 
-            $('.button-right').click(function(event) {
+            $('.datebox-button-next').click(function(event) {
                 that.calendar.date.setMonth(that.calendar.date.getMonth() + 1)
                 that.calendar.render()
             })
 
 
-            $('.button-today').click(function(event) {
+            $('.datebox-button-today').click(function(event) {
                 that.calendar.date = new Date()
                 that.calendar.render()
             })
 
-            $('.button-new').click(function(event) {
-                $('.create-box').show()
-                $('.button-new').attr('disabled', 'disabled')
+            $('.controlbox-button-new').click(function(event) {
+                $('.fastbox').show()
+                $('.fastbox-input').focus()
+                $('.controlbox-button-new').attr('disabled', 'disabled')
             })
 
-            $('.button-create').click(function(event) {
-                $('.create-box').hide()
+            $('.fastbox-button-create').click(function(event) {
+                $('.fastbox').hide()
                 $('.button-new').attr('disabled', false)
 
                 if (window.localStorage) {
@@ -75,9 +77,13 @@
                 }
             })
 
-            $('.button-cancel-create').click(function(event) {
-                $('.create-box').hide()
+            $('.fastbox-button-close').click(function(event) {
+                $('.fastbox').hide()
                 $('.button-new').attr('disabled', false)
+            })
+
+            $('.editbox-button-close').click(function(event) {
+                that.editbox.hide()
             })
         }
     }
@@ -123,16 +129,17 @@
 
             key = date.getFormattedDate()
             value = localStorage.getItem(key)
-            if (value) {
+            try {
                 json = JSON.parse(value)
                 return new Item(date, json.title || '', json.participants || '')
-            } else {
+            } catch (ex) {
                 return null
             }
         }
     }
 
-    var Calendar = function(date) {
+    var Calendar = function(app, date) {
+        this.app = app
         this.date = date
 
         this.render = function() {
@@ -162,41 +169,52 @@
                 $calendar.append($tableRow)
             }
 
-            $('.current-month').html([this.date.getMonthName(), this.date.getFullYear()].join(' '))
+            $('.datebox-current-month').html([this.date.getMonthName(), this.date.getFullYear()].join(' '))
         }
 
         this.renderCell = function(date, isFirstRow) {
-            var adapter, item, cellDate, cellTitle
+            var adapter, item, cellDate, cellTitle, clickHandler, app
 
+            app = this.app
             adapter = new LocalStorageAdapter()
             item = adapter.load(date)
-
             cellDate = isFirstRow ? [date.getDayName(), date.getDate()].join(', ') : date.getDate()
             cellTitle = item ? item.title : ''
 
+            clickHandler = function(event) {
+                $('.cell-current').removeClass('cell-current')
+                $(this).addClass('cell-current')
+                app.editbox.show(this)
+            }
+
             return $('<td></td>')
-                .addClass(item ? 'reminder' : '')
-                .append($('<span></span>')
-                    .addClass('cell-title')
-                    .html(cellDate))
+                .addClass('cell')
+                .addClass(item ? 'cell-reminder' : '')
+                .addClass(date.getFormattedDate() == new Date().getFormattedDate() ? 'cell-today' : '')
                 .append($('<div></div>')
-                    .addClass('cell-body')
-                    .html(cellTitle))
+                    .addClass('cell-wrapper')
+                    .append($('<span></span>')
+                        .addClass('cell-title')
+                        .html(cellDate))
+                    .append($('<div></div>')
+                        .addClass('cell-body')
+                        .html(cellTitle)))
                 .data('date', date.getFormattedDate())
+                .click(clickHandler)
         }
     }
 
-    var SearchBox = function(app) {
+    var ResultsBox = function(app) {
         this.app = app
 
         this.bindSearchHandler = function() {
             var that = this
 
-            $('.search-form').submit(function(event) {
+            $('.searchbox').submit(function(event) {
                 item.preventDefault()
             })
 
-            $('.search-input').keyup(function(event) {
+            $('.searchbox-input').keyup(function(event) {
                 if (event.keyCode == 27) {
                     that.hide()
                 } else {
@@ -207,26 +225,26 @@
         }
 
         this.hide = function() {
-            $('.search-wrapper').hide()
+            $('.resultsbox-wrapper').hide()
             $('.hidden-scrollbar').scrollTop(0)
         }
 
         this.show = function() {
-            $('.search-items').empty()
-            $('.search-wrapper').show()
+            $('.resultsbox-results').empty()
+            $('.resultsbox-wrapper').show()
             $('.hidden-scrollbar').scrollTop(0)
         }
 
         this.render = function() {
             var items, key, value, adapter, substring, show
 
-            items = $('.search-items')
+            items = $('.resultsbox-results')
             adapter = new LocalStorageAdapter()
 
             for(var i = 0; i < localStorage.length; i++) {
                 key = localStorage.key(i)
                 value = adapter.load(new Date(Date.parse(key)))
-                substring = $('.search-input').val().toLowerCase()
+                substring = $('.searchbox-input').val().toLowerCase()
                 show = value.date.getPrettyDate().toLowerCase().indexOf(substring) != -1
                     || value.title.toLowerCase().indexOf(substring) != -1
                     || value.participants.toLowerCase().indexOf(substring) != -1
@@ -240,12 +258,12 @@
             var app = this.app
 
             return $('<li></li>')
-                .addClass('search-item')
+                .addClass('resultsbox-result')
                 .append($('<div></div>')
-                    .addClass('search-item-title')
+                    .addClass('resultsbox-result-title')
                     .html(item.title))
                 .append($('<div></div>')
-                    .addClass('search-item-date')
+                    .addClass('resultsbox-result-date')
                     .html(item.date.getPrettyDate()))
                 .data('date', item.date.getFormattedDate())
                 .click(function(event) {
@@ -257,18 +275,18 @@
         this.bindScrollBar = function() {
             var divHeight, ulHeight, mouseScrolling
             var contentPosition, scrollPosition, savedScrollPosition, startPosition
-            var $hiddenScroll, $customScroll, $search, $searchItems, $searchWrapper
+            var $hiddenScroll, $customScroll, $resultsbox, $searchResults, $resultsboxWrapper
 
-            $hiddenScroll = $('.hidden-scrollbar')
-            $customScroll = $('.custom-scrollbar')
-            $searchWrapper = $('.search-wrapper')
-            $search = $('.search')
-            $searchItems = $('.search-items')
+            $hiddenScroll = $('.resultsbox-hidden-scrollbar')
+            $customScroll = $('.resultsbox-custom-scrollbar')
+            $resultsboxWrapper = $('.resultsbox-wrapper')
+            $resultsbox= $('.search')
+            $searchResults = $('.resultsbox-results')
             mouseScrolling = false
             savedScrollPosition = 0
 
             var updateCustomScrollPosition = function() {
-                divHeight = $search.height() - $customScroll.outerHeight(true)
+                divHeight = $resultsbox.height() - $customScroll.outerHeight(true)
                 ulHeight = $hiddenScroll.get(0).scrollHeight - $hiddenScroll.height()
                 contentPosition = $hiddenScroll.scrollTop() / ulHeight
                 scrollPosition = contentPosition * divHeight
@@ -281,7 +299,7 @@
 
             var updateHiddenScrollPosition = function() {
                 startPosition = item.clientY
-                divHeight = search.height() - customScroll.outerHeight(true)
+                divHeight = resultsbox.height() - customScroll.outerHeight(true)
                 ulHeight = hiddenScroll.get(0).scrollHeight - hiddenScroll.height()
                 mouseScrolling = true
 
@@ -305,10 +323,28 @@
 
             $hiddenScroll.bind('scroll', updateCustomScrollPosition)
             $customScroll.bind('mousedown', updateHiddenScrollPosition)
-            $searchItems.bind('scroll', preventScroll)
-            $searchWrapper.bind('selectstart', function() {
+            $searchResults.bind('scroll', preventScroll)
+            $resultsboxWrapper.bind('selectstart', function() {
                 return false
             })
+        }
+    }
+
+    var EditBox = function(app) {
+        this.app = app
+
+        this.show = function(cell) {
+            var $editbox, $cell
+
+            $cell = $(cell)
+            $('.editbox')
+                .show()
+                .css('left', $cell.offset().left + $cell.width() + 15)
+                .css('top', $cell.offset().top - 20)
+        }
+
+        this.hide = function() {
+            $('.editbox').hide()
         }
     }
 

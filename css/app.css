@@ -19,11 +19,12 @@ body {
     padding: 55px 0px 0px 1px;
 }
 
-.controls {
+.controlbox {
     float: left;
 }
 
-.controls button {
+.controlbox-button-new,
+.controlbox-button-refresh {
     background: #0472c7;
     color: #ffffff;
     font-size: 13px;
@@ -32,44 +33,55 @@ body {
     border: none;
     outline: none;
     text-shadow: 0px 2px 1px #01528c;
-    margin: 0px;
+    margin: 0px 8px 0px 0px;
     border-radius: 2px;
     height: 26px;
     line-height: 26px;
     padding: 0px 11px;
     box-shadow: 0px 1px 1px 0px #bdbdbd;
-    margin-right: 8px;
     cursor: pointer;
 }
 
-.controls button:active,
-.controls button:disabled {
+.controlbox-button-new:active,
+.controlbox-button-refresh:disabled {
     background: #025da3;
     color: #c1cfe0;
 }
 
-.search-form {
+.searchbox {
     float: right;
     background: url(../images/search.png) 0px 7px no-repeat;
     padding-left: 22px;
 }
 
-.search-input,
-.create-input {
+.searchbox-input,
+.fastbox-input,
+.editbox-input-title,
+.editbox-input-date,
+.editbox-input-participants,
+.editbox-input-details {
     margin: 0px;
-    height: 26px;
     outline: none;
+    display: block;
     border: none;
     border-radius: 2px;
     padding: 0px 9px;
     box-shadow: #b0b0b0 0px 1px 2px 1px inset;
 }
 
-.search-input {
+.searchbox-input,
+.fastbox-input,
+.editbox-input-title,
+.editbox-input-date,
+.editbox-input-participants {
+    height: 26px;
+}
+
+.searchbox-input {
     width: 180px;
 }
 
-.create-box {
+.fastbox {
     display: none;
     position: absolute;
     background: #fff;
@@ -82,7 +94,7 @@ body {
     z-index: 1;
 }
 
-.create-box:before {
+.fastbox:after {
     content: '';
     border: solid #ccc;
     border-width: 1px 1px 0px 0px;
@@ -91,26 +103,27 @@ body {
     width: 14px;
     height: 14px;
     top: -8px;
-    box-shadow: 2px -2px 4px -2px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px -2px 4px -2px #ccc;
     -webkit-transform: rotate(-45deg);
     -ms-transform: rotate(-45deg);
     transform: rotate(-45deg);
 }
 
-.create-input {
+.fastbox-input {
     width: 240px;
     margin-bottom: 8px;
-    display: block;
 }
 
-.button-create {
+.fastbox-button-create {
     margin: 0px 0px 24px 0px;
 }
 
-.button-cancel-create {
+.fastbox-button-close,
+.editbox-button-close {
     position: absolute;
+    font-size: 15px;
     top: 0px;
-    left: 280px;
+    right: 0px;
     color: #a1a1a1;
     background: none;
     margin: none;
@@ -124,38 +137,41 @@ body {
     padding: 0px 50px;
 }
 
-.date-controls {
+.datebox {
     margin: 15px 0px 13px;
 }
 
-.date-controls div {
+.datebox-button-prev,
+.datebox-button-next,
+.datebox-current-month,
+.datebox-button-today {
     display: inline-block;
     height: 17px;
     line-height: 17px;
     vertical-align: middle;
 }
 
-.button-left,
-.button-right,
-.button-today {
+.datebox-button-prev,
+.datebox-button-next,
+.datebox-button-today {
     box-shadow: #bfbfbf 0px 0px 2px 1px inset;
     border-radius: 4px;
     cursor: pointer;
 }
 
-.button-left, 
-.button-right {
+.datebox-button-prev,
+.datebox-button-next {
     width: 17px;
 }
 
-.button-today {
+.datebox-button-today {
     color: #666;
     padding: 0px 4px;
     font-size: 12px;
 }
 
-.button-left:after,
-.button-right:after {
+.datebox-button-prev:after,
+.datebox-button-next:after {
     content: "";
     position: absolute;
     width: 0; 
@@ -166,19 +182,19 @@ body {
     top: -2px;
 }
 
-.button-left:after {
+.datebox-button-prev:after {
     border-top: 3px solid transparent;
     border-bottom: 3px solid transparent;
     border-right: 3px solid #666; 
 }
 
-.button-right:after {
+.datebox-button-next:after {
     border-top: 3px solid transparent;
     border-bottom: 3px solid transparent;
     border-left: 3px solid #666; 
 }
 
-.current-month {
+.datebox-current-month {
     padding: 0px 1px;
 }
 
@@ -188,20 +204,34 @@ body {
     font-size: 12px;
 }
 
-.calendar td {
-    width: 113px;
-    height: 103px;
+.cell {
+    width: 127px;
+    height: 117px;
     border: 1px solid #e0e0e0;
-    padding: 7px;
 }
 
-.calendar td.reminder {
+.cell-wrapper {
+    padding: 7px;
+    width: 113px;
+    height: 103px;
+}
+
+.cell-reminder {
     background: #c2e3fc;
 }
 
-.calendar td.current {
+.cell-today {
     background: #f2f2f2;
     font-weight: bold;
+}
+
+.cell-current {
+    background: #e4eff7;
+}
+
+.cell-current .cell-wrapper {
+    border: 2px solid #86c9fc;
+    padding: 5px;
 }
 
 .cell-title {
@@ -212,7 +242,7 @@ body {
     font-weight: bold;
 }
 
-.search-wrapper {
+.resultsbox-wrapper {
     display: none;
     position: absolute;
     background: #fff;
@@ -225,7 +255,7 @@ body {
     border: 1px solid #ccc;
 }
 
-.search-wrapper:after {
+.resultsbox-wrapper:after {
     content: '';
     border: solid #ccc;
     border-width: 1px 1px 0px 0px;
@@ -235,7 +265,7 @@ body {
     height: 14px;
     top: -8px;
     left: 20px;
-    box-shadow: 2px -2px 4px -2px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px -2px 4px -2px #ccc;
     -webkit-transform: rotate(-45deg);
     -ms-transform: rotate(-45deg);
     transform: rotate(-45deg);
@@ -265,22 +295,21 @@ body {
     margin: 10px 0px;
 }
 
-.search-items {
+.resultsbox-results {
     width: 190px;
 }
 
-.search-item {
+.resultsbox-result {
     border-bottom: 1px solid #ebebeb;
-    display: block;
     margin-left: 8px;
     cursor: pointer;
 }
 
-.search-item:last-child {
+.resultsbox-result:last-child {
     border-bottom: none;
 }
 
-.search-item-title {
+.resultsbox-result-title {
     margin-top: 4px;
     margin-left: -4px;
     padding-left: 8px;
@@ -290,7 +319,7 @@ body {
     font-weight: bold;
 } 
 
-.search-item-date {
+.resultsbox-result-date {
     margin-bottom: 3px;
     margin-left: -4px;
     padding-left: 8px;
@@ -300,8 +329,61 @@ body {
     font-size: 12px;
 }
 
-.search-item:hover .search-item-title,
-.search-item:hover .search-item-date {
+.resultsbox-result:hover .resultsbox-result-title,
+.resultsbox-result:hover .resultsbox-result-date {
     background: #29a2ff;
     color: #fff;
+}
+
+.editbox {
+    display: none;
+    position: absolute;
+    background: #fff;
+    left: 445px;
+    top: 250px;
+    box-shadow: 0px 1px 4px 1px #cfcfcf;
+    border-radius: 2px;
+    border: 1px solid #ccc;
+    padding: 24px 22px;
+}
+
+.editbox:after {
+    content: '';
+    border: solid #ccc;
+    border-width: 0px 0px 1px 1px;
+    background: #fff;
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    left: -8px;
+    top: 20px;
+
+    box-shadow: -2px 2px 4px -2px #ccc;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.editbox-input-title,
+.editbox-input-date {
+    width: 250px;
+    margin-bottom: 5px;
+}
+
+.editbox-input-title {
+    font-size: 15px;
+}
+
+
+.editbox-input-participants {
+    width: 250px;
+    margin-bottom: 35px;
+}
+
+.editbox-input-details {
+    padding: 5px 9px;
+    width: 250px;   
+    height: 115px;
+    margin-bottom: 22px;
+    font-family: 'Arial', sans-serif;
 }
