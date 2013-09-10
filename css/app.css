@@ -327,6 +327,8 @@ input, textarea, button {
     border-bottom: 1px solid #ebebeb;
     margin-left: 8px;
     cursor: pointer;
+    position: relative;
+    z-index: 1;
 }
 
 .resultsbox-result:last-child {
