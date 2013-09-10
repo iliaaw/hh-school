@@ -23,6 +23,9 @@ function renderTableCell(date, firstRow) {
     }
     var cellBody = loadEventFromLoadStorage(date)
     var cell = $('<td></td>')
+    if (cellBody) {
+        cell.addClass('reminder')
+    }
     cell.append($('<span></span>').addClass('cell-title').html(cellTitle))
     cell.append($('<div></div>').addClass('cell-body').html(cellBody))
     cell.data('date', formatDate(date))
