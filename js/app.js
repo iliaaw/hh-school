@@ -149,13 +149,15 @@ function bindSearchHandler() {
     })
     $('.search-input').keyup(function(event) {
         if (event.keyCode == 27) {
-            $('.search-dropdown').hide()
+            $('.search-wrapper').hide()
+            $('.hidden-scrollbar').scrollTop(0)
             return
         }
 
-        $('.search-dropdown').show()
+        $('.search-wrapper').show()
         var items = $('.search-items')
         items.empty()
+        $('.hidden-scrollbar').scrollTop(0)
         for(var i = 0; i < localStorage.length; i++) {
             var key = localStorage.key(i)
             var value = localStorage.getItem(key)
@@ -185,9 +187,60 @@ function renderPage(date) {
     bindTableHandlers()
 }
 
+function bindScrollBar() {
+    var hiddenScroll = $('.hidden-scrollbar')
+    var customScroll = $('.custom-scrollbar')
+    var search = $('.search')
+    var searchItems = $('.search-items')
+    var mouse = false
+    var savedScrollPosition = 0
+
+    hiddenScroll.scroll(function(event) {    
+        var divHeight = search.height() - customScroll.outerHeight(true)
+        var ulHeight = hiddenScroll.get(0).scrollHeight - hiddenScroll.height()
+
+        var position = hiddenScroll.scrollTop() / ulHeight
+        var scrollPosition = position * divHeight
+        customScroll.css('top', scrollPosition + 'px')
+
+        if (!mouse) {
+            savedScrollPosition = scrollPosition
+        }
+    })
+
+    customScroll.bind('mousedown', function(event) {
+        var startPosition = event.clientY
+        var divHeight = search.height() - customScroll.outerHeight(true)
+        var ulHeight = hiddenScroll.get(0).scrollHeight - hiddenScroll.height()
+        mouse = true
+
+        $(document).bind('mousemove', function(event) {
+            var scrollPosition = (event.clientY - startPosition) + savedScrollPosition;
+            var contentPosition = scrollPosition / divHeight
+            hiddenScroll.scrollTop(ulHeight * contentPosition)
+        })
+
+        $(document).bind('mouseup', function(event) {
+            savedScrollPosition = hiddenScroll.scrollTop() / ulHeight * divHeight
+            $(document).unbind('mousemove', mousemove)
+            mouse = false
+        })
+    })
+
+    $('.search-wrapper').bind('selectstart', function() {
+        return false
+    })
+
+    $('.search-items').scroll(function() {
+        this.scrollTop = 0
+        this.scrollLeft = 0
+    })
+}
+
 $(document).ready(function() {
     bindButtonHandlers()
     bindSearchHandler()
+    bindScrollBar()
     _globalDate = new Date()
     renderPage(_globalDate)
 })

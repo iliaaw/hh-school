@@ -154,11 +154,6 @@ body {
     font-size: 12px;
 }
 
-/*.button-today:after {
-    content: "Сегодня";
-    font-size: 12px;
-}*/
-
 .button-left:after,
 .button-right:after {
     content: "";
@@ -217,7 +212,7 @@ body {
     font-weight: bold;
 }
 
-.search-dropdown {
+.search-wrapper {
     display: none;
     position: absolute;
     background: #fff;
@@ -230,7 +225,7 @@ body {
     border: 1px solid #ccc;
 }
 
-.search-dropdown:before {
+.search-wrapper:after {
     content: '';
     border: solid #ccc;
     border-width: 1px 1px 0px 0px;
@@ -246,13 +241,32 @@ body {
     transform: rotate(-45deg);
 }
 
-.search-items {
-    position: absolute;
+.search {
     width: 210px;
     height: 383px;
-    overflow: auto;
-    overflow-y: scroll;
+    overflow: hidden;
+}
 
+.hidden-scrollbar {
+    width: 200%;
+    height: 383px;
+    overflow-y: scroll;
+}
+
+.custom-scrollbar {
+    position: absolute;
+    width: 7px;
+    height: 24px;
+    border-radius: 4px;
+    background: #787878;
+    top: 0px;
+    right: 7px;
+    cursor: pointer;
+    margin: 10px 0px;
+}
+
+.search-items {
+    width: 190px;
 }
 
 .search-item {
