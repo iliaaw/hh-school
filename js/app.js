@@ -1,37 +1,37 @@
-function Month() {
-    
-}
+var Utils = {},
+    Calendar = {},
+    Search = {}
 
-function getDayOfWeek(date) {
+Date.prototype.getDayName = function() {
     var dayNames = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
-    return dayNames[date.getDay()]
+    return dayNames[this.getDay()]
 }
 
-function getNameOfMonth(date) {
+Date.prototype.getMonthName = function() {
     var monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
-    return monthNames[date.getMonth()]
+    return monthNames[this.getMonth()]
 }
 
-function getCorrectedDay(date) {
-    return date.getDay() == 0 ? 6 : date.getDay() - 1
+Date.prototype.getRussianDay = function() {
+    return this.getDay() == 0 ? 6 : this.getDay() - 1
 }
 
-function getPrettyDate(date) {
+Date.prototype.getPrettyDate = function() {
     var monthNames = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
-    return [date.getDate(), monthNames[date.getMonth()]].join(' ')
+    return [this.getDate(), monthNames[this.getMonth()]].join(' ')
 }
 
-function formatDate(date) {
-    var year = date.getFullYear()
-    var month = ('0' + (date.getMonth() + 1)).slice(-2)
-    var day = ('0' + date.getDate()).slice(-2)
+Date.prototype.getFormattedDate = function() {
+    var year = this.getFullYear()
+    var month = ('0' + (this.getMonth() + 1)).slice(-2)
+    var day = ('0' + this.getDate()).slice(-2)
     return [year, month, day].join('-')
 }
 
 function renderTableCell(date, firstRow) {
     var cellTitle = date.getDate()
     if (firstRow) {
-        cellTitle = [getDayOfWeek(date), cellTitle].join(', ')
+        cellTitle = [date.getDayName(), cellTitle].join(', ')
     }
     var cellBody = loadEventFromLoadStorage(date)
     var cell = $('<td></td>')
@@ -40,13 +40,13 @@ function renderTableCell(date, firstRow) {
     }
     cell.append($('<span></span>').addClass('cell-title').html(cellTitle))
     cell.append($('<div></div>').addClass('cell-body').html(cellBody))
-    cell.data('date', formatDate(date))
+    cell.data('date', date.getFormattedDate())
     return cell
 }
 
 function renderCalendar(date) {
     var firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1)
-    var dayOfWeek = getCorrectedDay(firstDayOfMonth)
+    var dayOfWeek = firstDayOfMonth.getRussianDay()
     var currentDate = new Date(firstDayOfMonth)
     currentDate.setDate(currentDate.getDate() - dayOfWeek)
 
@@ -75,7 +75,7 @@ function renderCalendar(date) {
 }
 
 function renderCurrentMonth(date) {
-    $('.current-month').html([getNameOfMonth(date), date.getFullYear()].join(' '))
+    $('.current-month').html([date.getMonthName(), date.getFullYear()].join(' '))
 }
 
 function bindTableHandlers() {
@@ -134,8 +134,8 @@ function renderSearchItem(date, event) {
     var listItem = $('<li></li>')
     listItem.addClass('search-item')
     listItem.append($('<div></div>').addClass('search-item-event').html(event))
-    listItem.append($('<div></div>').addClass('search-item-date').html(getPrettyDate(date)))
-    listItem.data('date', formatDate(date))
+    listItem.append($('<div></div>').addClass('search-item-date').html(date.getPrettyDate()))
+    listItem.data('date', date.getFormattedDate())
     listItem.click(function(event) {
         _globalDate = date
         renderPage(_globalDate)
@@ -170,13 +170,13 @@ function bindSearchHandler() {
 }
 
 function saveEventToLocalStorage(date, event) {
-    var key = formatDate(date)
+    var key = date.getFormattedDate()
     var value = event
     localStorage.setItem(key, value)
 }
 
 function loadEventFromLoadStorage(date) {
-    var key = formatDate(date)
+    var key = date.getFormattedDate()
     var value = localStorage.getItem(key)
     return value
 }
