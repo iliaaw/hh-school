@@ -218,7 +218,7 @@
         }
 
         this.render = function() {
-            var items, key, value, adapter, substring
+            var items, key, value, adapter, substring, show
 
             items = $('.search-items')
             adapter = new LocalStorageAdapter()
@@ -226,8 +226,11 @@
             for(var i = 0; i < localStorage.length; i++) {
                 key = localStorage.key(i)
                 value = adapter.load(new Date(Date.parse(key)))
-                substring = $('.search-input').val()
-                if (value && (value.title.indexOf(substring) != -1 || value.participants.indexOf(substring) != -1)) {
+                substring = $('.search-input').val().toLowerCase()
+                show = value.date.getPrettyDate().toLowerCase().indexOf(substring) != -1
+                    || value.title.toLowerCase().indexOf(substring) != -1
+                    || value.participants.toLowerCase().indexOf(substring) != -1
+                if (value && show) {
                     items.append(this.renderSearchItem(value))
                 }
             }
