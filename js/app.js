@@ -483,6 +483,7 @@
             $('.fastbox-input').keyup(function(event) {
                 if (event.keyCode == 13) {
                     that.create()
+                    that.hide()
                 }
                 if (event.keyCode == 27) {
                     that.hide()
