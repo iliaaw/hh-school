@@ -62,7 +62,7 @@ button {
 
 .searchbox {
     float: right;
-    background: url(../images/search.png) 0px 7px no-repeat;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAA2UlEQVR42o2RyQqEMBBE/f+/UXEHQRE9enIBQQ/unr33UA2R9GSGmUOFDp3XS8W675ugZVmoqiqKooiFeF1XUnldFo6maci2bVaSJBTHMceO41DXdSY0z/Pz+DxP0juHYcg5xAIqioIrXtdlVFQFy7KUkO/7lKbpx9mhIAi4o4A8z/sJQQLK85zH0/d5Hw8rCGiapseI4ziEEeiAXN/3puV1XT+Ww278k7q7rkvYe993CUHjOFKWZfwIQty2LWFnwDpofTNAads2A/wJKRAADBuG4T9IgQAQvwA95V9UlYq0twAAAABJRU5ErkJggg==) 0px 7px no-repeat;
     padding-left: 22px;
 }
 
