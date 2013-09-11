@@ -250,6 +250,7 @@ button {
     width: 127px;
     height: 117px;
     border: 1px solid #e0e0e0;
+    overflow: hidden;
 }
 
 .cell-wrapper {
@@ -264,6 +265,9 @@ button {
 
 .cell-today {
     background: #f2f2f2;
+}
+
+.cell-today .cell-date {
     font-weight: bold;
 }
 
@@ -356,6 +360,8 @@ button {
     margin-left: 8px;
     cursor: pointer;
     position: relative;
+    white-space: nowrap;
+    overflow: hidden;
     z-index: 1;
 }
 
