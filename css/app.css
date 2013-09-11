@@ -52,8 +52,9 @@ button {
     box-shadow: 0px 1px 1px 0px #bdbdbd;
 }
 
+.controlbox-button-new-pressed,
+.controlbox-button-refresh-pressed
 .controlbox-button-new:active,
-.controlbox-button-new:disabled,
 .controlbox-button-refresh:active {
     background: #025da3;
     color: #c1cfe0;

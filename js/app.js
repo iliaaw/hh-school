@@ -481,7 +481,7 @@
         this.show = function() {
             $('.fastbox').show()
             $('.fastbox-input').focus()
-            $('.controlbox-button-new').attr('disabled', 'disabled')
+            $('.controlbox-button-new').addClass('controlbox-button-new-pressed')
 
             this.app.editbox.hide()
             this.app.resultsbox.hide()
@@ -490,7 +490,7 @@
         this.hide = function() {
             $('.fastbox').hide()
             $('.fastbox-input').val('')
-            $('.controlbox-button-new').attr('disabled', false)
+            $('.controlbox-button-new').removeClass('controlbox-button-new-pressed')
         }
 
         this.create = function() {
