@@ -58,7 +58,6 @@
                 that.calendar.render()
             })
 
-
             $('.datebox-button-today').click(function(event) {
                 that.calendar.date = new Date()
                 that.editbox.hide()
@@ -119,7 +118,7 @@
         }
 
         this.load = function(date) {
-            var key, value, jso
+            var key, value, json
 
             key = date.getHyphenSeparatedDate()
             value = localStorage.getItem(key)
@@ -224,7 +223,7 @@
             var that = this
 
             $('.searchbox').submit(function(event) {
-                item.preventDefault()
+                event.preventDefault()
             })
 
             $('.searchbox-input').keyup(function(event) {
@@ -500,6 +499,7 @@
                 if (item) {
                     this.adapter.save(item)
                 }
+                this.hide()
                 app.calendar.render()
             }
         }
@@ -509,7 +509,6 @@
 
             $('.fastbox-button-create').click(function(event) {
                 that.create()
-                that.hide()  
             })
 
             $('.fastbox-button-close').click(function(event) {
@@ -519,7 +518,6 @@
             $('.fastbox-input').keydown(function(event) {
                 if (event.keyCode == 13) {
                     that.create()
-                    that.hide()
                 }
                 if (event.keyCode == 27) {
                     that.hide()
