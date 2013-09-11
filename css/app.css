@@ -20,8 +20,6 @@ button {
     background: #f2f2f2;
     padding: 0px 50px;
     border-bottom: 1px solid #ccc;
-
-    -webkit-box-shadow: 0px 5px 4px -4px #cfcfcf;
     box-shadow: 0px 5px 4px -4px #cfcfcf;
 }
 
@@ -50,8 +48,6 @@ button {
     line-height: 26px;
     padding: 0px 11px;
     cursor: pointer;
-
-    -webkit-box-shadow: 0px 1px 1px 0px #bdbdbd;
     box-shadow: 0px 1px 1px 0px #bdbdbd;
 }
 
@@ -82,8 +78,6 @@ button {
     display: block;
     border: 1px solid #ccc;
     border-radius: 2px;
-
-    -webkit-box-shadow: #b0b0b0 0px 1px 1px 0px inset;
     box-shadow: #b0b0b0 0px 1px 1px 0px inset;
 }
 
@@ -109,8 +103,6 @@ button {
     border: 1px solid #ccc;
     padding: 24px 24px 0px;
     z-index: 1;
-
-    -webkit-box-shadow: 0px 1px 4px 1px #cfcfcf;
     box-shadow: 0px 1px 4px 1px #cfcfcf;
 }
 
@@ -124,8 +116,6 @@ button {
     height: 14px;
     top: -8px;
     left: 20px;
-
-    -webkit-box-shadow: 2px -2px 4px -2px #ccc;
     box-shadow: 2px -2px 4px -2px #ccc;
 
     -webkit-transform: rotate(-45deg);
@@ -196,8 +186,6 @@ button {
 .datebox-button-today {
     border-radius: 4px;
     cursor: pointer;
-    
-    -webkit-box-shadow: #bfbfbf 0px 0px 2px 1px inset;
     box-shadow: #bfbfbf 0px 0px 2px 1px inset;
 }
 
@@ -299,8 +287,6 @@ button {
     height: 383px;
     border-radius: 2px;
     border: 1px solid #ccc;
-
-    -webkit-box-shadow: 0px 1px 4px 1px #cfcfcf;
     box-shadow: 0px 1px 4px 1px #cfcfcf;
 }
 
@@ -314,8 +300,6 @@ button {
     height: 14px;
     top: -8px;
     left: 20px;
-
-    -webkit-box-shadow: 2px -2px 4px -2px #ccc;
     box-shadow: 2px -2px 4px -2px #ccc;
 
     -webkit-transform: rotate(-45deg);
@@ -403,8 +387,6 @@ button {
     border: 1px solid #ccc;
     padding: 24px 22px;
     margin: -20px 15px;
-
-    -webkit-box-shadow: 0px 1px 4px 1px #cfcfcf;
     box-shadow: 0px 1px 4px 1px #cfcfcf;
 }
 
@@ -428,16 +410,12 @@ button {
 .editbox-move-to-left:after {
     border-width: 1px 1px 0px 0px;
     right: -8px;
-
-    -webkit-box-shadow: 2px -2px 4px -2px #ccc;
     box-shadow: 2px -2px 4px -2px #ccc;
 }
 
 .editbox-move-to-right:after {
     border-width: 0px 0px 1px 1px;
     left: -8px;
-
-    -webkit-box-shadow: -2px 2px 4px -2px #ccc;
     box-shadow: -2px 2px 4px -2px #ccc;
 }
 
