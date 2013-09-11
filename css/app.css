@@ -11,11 +11,12 @@ button {
 
 .container {
     width: 1000px;
-    margin: 0px 0px 65px;
+    margin: 0px auto 65px;
+    position: relative;
 }
 
 .header-wrapper {
-    height: 101px;
+    height: 100px;
     background: #f2f2f2;
     padding: 0px 50px;
     border-bottom: 1px solid #ccc;
@@ -26,6 +27,8 @@ button {
 
 .header {
     padding: 55px 0px 0px 1px;
+    width: 900px;
+    margin: 0px auto;
 }
 
 .controlbox {
@@ -101,7 +104,7 @@ button {
     position: absolute;
     background: #fff;
     left: 50px;
-    top: 97px;
+    top: -20px;
     border-radius: 2px;
     border: 1px solid #ccc;
     padding: 24px 24px 0px;
@@ -286,8 +289,8 @@ button {
     display: none;
     position: absolute;
     background: #fff;
-    left: 752px;
-    top: 97px;
+    left: 750px;
+    top: -20px;
     width: 210px;
     height: 383px;
     border-radius: 2px;

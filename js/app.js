@@ -382,20 +382,20 @@
                 .removeClass('editbox-move-to-top')
             if (moveToRight) {
                 $editbox
-                    .css('left', $cell.offset().left + $cell.width())
+                    .css('left', $cell.position().left + $cell.width())
                     .addClass('editbox-move-to-right')
             } else {
                 $editbox
-                    .css('left', $cell.offset().left - $editbox.outerWidth(true))
+                    .css('left', $cell.position().left - $editbox.outerWidth(true))
                     .addClass('editbox-move-to-left')
             }   
             if (moveToTop) {
                 $editbox
-                    .css('top', $cell.offset().top)
+                    .css('top', $cell.position().top)
                     .addClass('editbox-move-to-top')
             } else {
                 $editbox
-                    .css('top', $cell.offset().top + $cell.height() - $editbox.outerHeight(true))
+                    .css('top', $cell.position().top + $cell.height() - $editbox.outerHeight(true))
                     .addClass('editbox-move-to-bottom')
             }
 
