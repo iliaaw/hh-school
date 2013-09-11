@@ -373,7 +373,6 @@
 
             moveToRight = (typeof moveToRight !== 'undefined') ? moveToRight : true
             moveToTop = (typeof moveToTop !== 'undefined') ? moveToTop : true
-            console.log(moveToTop)
             $editbox
                 .show()
                 .removeClass('editbox-move-to-left')
