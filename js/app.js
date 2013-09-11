@@ -462,7 +462,7 @@
             })
 
             $.each(['.editbox-input-title', '.editbox-input-participants'], function(index, selector) {
-                $(selector).keyup(function(event) {
+                $(selector).keydown(function(event) {
                     if (event.keyCode == 13) {
                         that.update()
                     }
@@ -517,7 +517,7 @@
                 that.hide()
             })
 
-            $('.fastbox-input').keyup(function(event) {
+            $('.fastbox-input').keydown(function(event) {
                 if (event.keyCode == 13) {
                     that.create()
                     that.hide()
