@@ -142,28 +142,40 @@
         this.date = date
         this.adapter = new LocalStorageAdapter()
 
-        this.render = function() {
-            var firstDay = new Date(this.date.getFullYear(), this.date.getMonth(), 1)
-            var day = firstDay.getRussianDay()
-            var dateIterator = new Date(firstDay)
-            dateIterator.setDate(dateIterator.getDate() - day)
+        var DAYS_IN_WEEK = 7
+        var LEFT_CELLS = 4
+        var TOP_CELLS = 4
 
-            var isFirstRow = true
-            var $tableRow = $('<tr></tr>')
-            var $calendar = $('.calendar')
+        this.render = function() {
+            var firstDay, russianDay, date, isFirstRow
+            var $cell, $tableRow, $calendar
+
+            firstDay = new Date(this.date.getFullYear(), this.date.getMonth(), 1)
+            russianDay = firstDay.getRussianDay()
+            date = new Date(firstDay)
+            date.setDate(date.getDate() - russianDay)
+            isFirstRow = true
+            $tableRow = $('<tr></tr>')
+            $calendar = $('.calendar') 
             $calendar.empty()
 
             while (true) {
-                $tableRow.append(this.renderCell(dateIterator, isFirstRow))
+                $cell = this.renderCell(
+                    date, 
+                    isFirstRow, 
+                    $tableRow.children('td').length < LEFT_CELLS,
+                    $calendar.find('tr').length < TOP_CELLS
+                )
+                $tableRow.append($cell)
                 if ($tableRow.children('td').length == 7) {
                     $calendar.append($tableRow)
                     $tableRow = $('<tr></tr>')
                     isFirstRow = false
-                    if (dateIterator.getMonth() != this.date.getMonth()) {
+                    if (date.getMonth() != this.date.getMonth()) {
                         break
                     }
                 }
-                dateIterator.setDate(dateIterator.getDate() + 1)
+                date.setDate(date.getDate() + 1)
             }
             if ($tableRow.children('td').length != 0) {
                 $calendar.append($tableRow)
@@ -172,7 +184,7 @@
             $('.datebox-current-month').html([this.date.getMonthName(), this.date.getFullYear()].join(' '))
         }
 
-        this.renderCell = function(date, isFirstRow) {
+        this.renderCell = function(date, isFirstRow, moveToRight, moveToTop) {
             var app, item, cellDate, cellParticipants, clickHandler
 
             app = this.app
@@ -182,7 +194,7 @@
             clickHandler = function(event) {
                 $('.cell-current').removeClass('cell-current')
                 $(this).addClass('cell-current')
-                app.editbox.show(this)
+                app.editbox.show(this, moveToRight, moveToTop)
             }
 
             return $('<td></td>')
@@ -352,15 +364,40 @@
         this.app = app
         this.adapter = new LocalStorageAdapter()
 
-        this.show = function(cell) {
+        this.show = function(cell, moveToRight, moveToTop) {
             var item, $editbox, $cell
 
             this.clear()
             $cell = $(cell)
-            $('.editbox')
+            $editbox = $('.editbox')
+
+            moveToRight = (typeof moveToRight !== 'undefined') ? moveToRight : true
+            moveToTop = (typeof moveToTop !== 'undefined') ? moveToTop : true
+            console.log(moveToTop)
+            $editbox
                 .show()
-                .css('left', $cell.offset().left + $cell.width() + 15)
-                .css('top', $cell.offset().top - 20)
+                .removeClass('editbox-move-to-left')
+                .removeClass('editbox-move-to-right')
+                .removeClass('editbox-move-to-bottom')
+                .removeClass('editbox-move-to-top')
+            if (moveToRight) {
+                $editbox
+                    .css('left', $cell.offset().left + $cell.width())
+                    .addClass('editbox-move-to-right')
+            } else {
+                $editbox
+                    .css('left', $cell.offset().left - $editbox.outerWidth(true))
+                    .addClass('editbox-move-to-left')
+            }   
+            if (moveToTop) {
+                $editbox
+                    .css('top', $cell.offset().top)
+                    .addClass('editbox-move-to-top')
+            } else {
+                $editbox
+                    .css('top', $cell.offset().top + $cell.height() - $editbox.outerHeight(true))
+                    .addClass('editbox-move-to-bottom')
+            }
 
             this.date = new Date(Date.parse($cell.data('date')))
             item = this.adapter.load(this.date)
