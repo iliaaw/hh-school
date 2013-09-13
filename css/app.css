@@ -25,7 +25,7 @@ button {
 
 .header {
     padding: 55px 0px 0px 1px;
-    width: 900px;
+    width: 897px;
     margin: 0px auto;
 }
 
@@ -102,7 +102,7 @@ button {
     border-radius: 2px;
     border: 1px solid #ccc;
     padding: 24px 24px 0px;
-    z-index: 1;
+    z-index: 100;
     box-shadow: 0px 1px 4px 1px #cfcfcf;
 }
 
@@ -144,6 +144,12 @@ button {
     outline: none;
     border: none;
     cursor: pointer;
+}
+
+.fastbox-button-close:hover,
+.editbox-button-close:hover,
+.searchbox-button-close:hover {
+    color: #666;
 }
 
 .fastbox-button-close,
@@ -238,13 +244,20 @@ button {
     width: 127px;
     height: 117px;
     border: 1px solid #e0e0e0;
-    overflow: hidden;
+    line-height: 16px;
 }
 
-.cell-wrapper {
-    padding: 7px;
+.cell-border {
+    position: relative;
     width: 113px;
     height: 103px;
+    padding: 7px;
+}
+
+.cell-inner {
+    width: 113px;
+    height: 103px;
+    overflow: hidden;
 }
 
 .cell-reminder {
@@ -263,18 +276,26 @@ button {
     background: #e4eff7;
 }
 
-.cell-current .cell-wrapper {
+.cell-current .cell-border:after {
+    content: '';
+    position: absolute;
+    display: block;
     border: 2px solid #86c9fc;
-    padding: 5px;
+    top: -1px;
+    left: -1px;
+    bottom: -1px;
+    right: -1px;
+}
+
+.cell-date {
+    margin-bottom: 5px;
 }
 
 .cell-title {
-    margin-top: 5px;
     font-weight: bold;
 }
 
 .cell-participants {
-    margin-top: 5px;
 }
 
 .resultsbox-wrapper {
@@ -288,6 +309,7 @@ button {
     border-radius: 2px;
     border: 1px solid #ccc;
     box-shadow: 0px 1px 4px 1px #cfcfcf;
+    z-index: 100;
 }
 
 .resultsbox-wrapper:after {
@@ -341,12 +363,12 @@ button {
 
 .resultsbox-result {
     border-bottom: 1px solid #ebebeb;
-    margin-left: 8px;
+    margin-left: 4px;
     cursor: pointer;
     position: relative;
     white-space: nowrap;
     overflow: hidden;
-    z-index: 1;
+    z-index: 100;
 }
 
 .resultsbox-result:last-child {
@@ -388,6 +410,7 @@ button {
     padding: 24px 22px;
     margin: -20px 15px;
     box-shadow: 0px 1px 4px 1px #cfcfcf;
+    z-index: 100;
 }
 
 
