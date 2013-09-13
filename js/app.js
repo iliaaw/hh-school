@@ -3,6 +3,14 @@
 (function () {
     "use strict";
 
+    var App,
+        Calendar,
+        EditBox,
+        FastBox,
+        Item,
+        LocalStorageAdapter,
+        ResultsBox;
+
     Date.prototype.getDayName = function () {
         var dayNames = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
         return dayNames[this.getDay()];
@@ -35,7 +43,7 @@
         return [year, month, day].join('-');
     };
 
-    var Item = function (date, title, participants, details) {
+    Item = function (date, title, participants, details) {
         this.date = date;
         this.title = title;
         this.participants = participants;
@@ -43,8 +51,15 @@
     };
 
     Item.fromString = function (str) {
-        var monthNames = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
-        var commaIndex, spaceIndex, firstHalf, secondHalf, day, month, date, i;
+        var monthNames = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'],
+            commaIndex,
+            date,
+            day,
+            firstHalf,
+            i,
+            month,
+            secondHalf,
+            spaceIndex;
 
         commaIndex = str.indexOf(',');
         if (commaIndex !== -1) {
@@ -69,7 +84,7 @@
         return null;
     };
 
-    var LocalStorageAdapter = function () {
+    LocalStorageAdapter = function () {
         this.save = function (item) {
             var key, value;
 
@@ -101,7 +116,7 @@
         };
     };
 
-    var FastBox = function (app) {
+    FastBox = function (app) {
         this.app = app;
         this.adapter = new LocalStorageAdapter();
 
@@ -134,11 +149,11 @@
         this.bindHandlers = function () {
             var that = this;
 
-            $('.fastbox-button-create').click(function (event) {
+            $('.fastbox-button-create').click(function () {
                 that.create();
             });
 
-            $('.fastbox-button-close').click(function (event) {
+            $('.fastbox-button-close').click(function () {
                 that.hide();
             });
 
@@ -153,7 +168,7 @@
         };
     };
 
-    var EditBox = function (app) {
+    EditBox = function (app) {
         this.app = app;
         this.adapter = new LocalStorageAdapter();
 
@@ -241,20 +256,20 @@
         this.bindHandlers = function () {
             var that = this;
 
-            $('.editbox-button-close').click(function (event) {
+            $('.editbox-button-close').click(function () {
                 that.hide();
             });
 
-            $('.editbox-button-done').click(function (event) {
+            $('.editbox-button-done').click(function () {
                 that.update();
             });
 
-            $('.editbox-button-remove').click(function (event) {
+            $('.editbox-button-remove').click(function () {
                 that.remove();
             });
 
-            $.each(['.editbox-input-title', '.editbox-input-participants'], function (index, selector) {
-                $(selector).keydown(function (event) {
+            $.each(['.editbox-input-title', '.editbox-input-participants'], function () {
+                $(this).keydown(function (event) {
                     if (event.keyCode === 13) {
                         that.update();
                     }
@@ -266,7 +281,7 @@
         };
     };
 
-    var ResultsBox = function (app) {
+    ResultsBox = function (app) {
         this.app = app;
 
         this.bindSearchHandler = function () {
@@ -335,6 +350,7 @@
         this.renderSearchItem = function (item) {
             var that = this;
 
+            // I'm really ashamed of this code
             return $('<li></li>')
                 .addClass('resultsbox-result')
                 .append($('<div></div>')
@@ -343,16 +359,28 @@
                 .append($('<div></div>')
                     .addClass('resultsbox-result-date')
                     .html(item.date.getPrettyDate()))
-                .click(function (event) {
+                .click(function () {
                     that.app.calendar.date = item.date;
                     that.app.calendar.render();
                 });
         };
 
         this.bindScrollHandler = function () {
-            var divHeight, ulHeight, mouseScrolling;
-            var contentPosition, scrollPosition, savedScrollPosition, startPosition;
-            var $hiddenScroll, $customScroll, $resultsbox, $searchResults, $resultsboxWrapper;
+            var contentPosition,
+                divHeight,
+                mouseScrolling,
+                preventScroll,
+                savedScrollPosition,
+                scrollPosition,
+                startPosition,
+                ulHeight,
+                updateCustomScrollPosition,
+                updateHiddenScrollPosition,
+                $customScroll,
+                $hiddenScroll,
+                $resultsbox,
+                $resultsboxWrapper,
+                $searchResults;
 
             $hiddenScroll = $('.resultsbox-hidden-scroll');
             $customScroll = $('.resultsbox-custom-scroll');
@@ -362,7 +390,7 @@
             mouseScrolling = false;
             savedScrollPosition = 0;
 
-            var updateCustomScrollPosition = function (event) {
+            updateCustomScrollPosition = function () {
                 divHeight = $resultsbox.height() - $customScroll.outerHeight(true);
                 ulHeight = $hiddenScroll.get(0).scrollHeight - $hiddenScroll.height();
                 contentPosition = $hiddenScroll.scrollTop() / ulHeight;
@@ -374,7 +402,7 @@
                 }
             };
 
-            var updateHiddenScrollPosition = function (event) {
+            updateHiddenScrollPosition = function (event) {
                 startPosition = event.clientY;
                 divHeight = $resultsbox.height() - $customScroll.outerHeight(true);
                 ulHeight = $hiddenScroll.get(0).scrollHeight - $hiddenScroll.height();
@@ -386,14 +414,14 @@
                     $hiddenScroll.scrollTop(ulHeight * contentPosition);
                 });
 
-                $(document).bind('mouseup', function (event) {
+                $(document).bind('mouseup', function () {
                     savedScrollPosition = $hiddenScroll.scrollTop() / ulHeight * divHeight;
                     $(document).unbind('mousemove');
                     mouseScrolling = false;
                 });
             };
 
-            var preventScroll = function (event) {
+            preventScroll = function () {
                 this.scrollTop = 0;
                 this.scrollLeft = 0;
             };
@@ -409,18 +437,23 @@
         };
     };
 
-    var Calendar = function (app, date) {
+    Calendar = function (app, date) {
+        var DAYS_IN_WEEK = 7,
+            LEFT_CELLS = 4,
+            TOP_CELLS = 4;
+
         this.app = app;
         this.date = date;
         this.adapter = new LocalStorageAdapter();
 
-        var DAYS_IN_WEEK = 7;
-        var LEFT_CELLS = 4;
-        var TOP_CELLS = 4;
-
         this.render = function () {
-            var firstDay, russianDay, currentDate, isFirstRow;
-            var $cell, $tableRow, $calendar;
+            var currentDate,
+                firstDay,
+                isFirstRow,
+                russianDay,
+                $calendar,
+                $cell,
+                $tableRow;
 
             firstDay = new Date(this.date.getFullYear(), this.date.getMonth(), 1);
             russianDay = firstDay.getRussianDay();
@@ -457,18 +490,22 @@
         };
 
         this.renderCell = function (date, isFirstRow, moveToRight, moveToTop) {
-            var that, item, cellDate, clickHandler;
+            var cellDate,
+                clickHandler,
+                item,
+                that;
 
             that = this;
             item = this.adapter.load(date);
             cellDate = isFirstRow ? [date.getDayName(), date.getDate()].join(', ') : date.getDate();
 
-            clickHandler = function (event) {
+            clickHandler = function () {
                 $('.cell-current').removeClass('cell-current');
                 $(this).addClass('cell-current');
                 that.app.editbox.show(this, moveToRight, moveToTop);
             };
 
+            // this piece of code makes me feel ashamed, too
             return $('<td></td>')
                 .addClass('cell')
                 .addClass(item ? 'cell-reminder' : '')
@@ -489,7 +526,7 @@
         };
     };
 
-    var App = function () {
+    App = function () {
         this.calendar = new Calendar(this, new Date());
         this.fastbox = new FastBox(this);
         this.editbox = new EditBox(this);
@@ -506,25 +543,25 @@
         this.bindHandlers = function () {
             var that = this;
 
-            $('.datebox-button-prev').click(function (event) {
+            $('.datebox-button-prev').click(function () {
                 that.calendar.date.setMonth(that.calendar.date.getMonth() - 1);
                 that.editbox.hide();
                 that.calendar.render();
             });
 
-            $('.datebox-button-next').click(function (event) {
+            $('.datebox-button-next').click(function () {
                 that.calendar.date.setMonth(that.calendar.date.getMonth() + 1);
                 that.editbox.hide();
                 that.calendar.render();
             });
 
-            $('.datebox-button-today').click(function (event) {
+            $('.datebox-button-today').click(function () {
                 that.calendar.date = new Date();
                 that.editbox.hide();
                 that.calendar.render();
             });
 
-            $('.controlbox-button-new').click(function (event) {
+            $('.controlbox-button-new').click(function () {
                 that.fastbox.show();
             });
         };
